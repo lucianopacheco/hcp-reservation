@@ -1,0 +1,26 @@
+{
+  "changelogDate": "20220921010054",
+  "clientRootFolder": "reservation",
+  "databaseType": "sql",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "login",
+      "fieldType": "String"
+    }
+  ],
+  "jpaMetamodelFiltering": false,
+  "microserviceName": "reservation",
+  "name": "LocationUser",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "location",
+      "relationshipName": "location",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "serviceClass"
+}
