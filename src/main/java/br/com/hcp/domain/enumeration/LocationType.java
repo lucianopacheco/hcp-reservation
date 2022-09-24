@@ -5,5 +5,5 @@ package br.com.hcp.domain.enumeration;
  */
 public enum LocationType {
     HOME,
-    LOCATION,
+    LOCATION;
 }
