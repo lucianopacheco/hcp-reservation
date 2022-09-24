@@ -17,7 +17,7 @@
             <column name="driver_login" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            <column name="jhi_when" type="${datetimeType}">
+            <column name="when_date_time" type="${datetimeType}">
                 <constraints nullable="false" />
             </column>
             <column name="destination_type" type="varchar(255)">
@@ -46,7 +46,7 @@
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
-        <dropDefaultValue tableName="trip" columnName="jhi_when" columnDataType="${datetimeType}"/>
+        <dropDefaultValue tableName="trip" columnName="when_date_time" columnDataType="${datetimeType}"/>
         <dropDefaultValue tableName="trip" columnName="created_at" columnDataType="${datetimeType}"/>
     </changeSet>
 
@@ -68,7 +68,7 @@
                   usePreparedStatements="true">
             <column name="id" type="numeric"/>
             <column name="driver_login" type="string"/>
-            <column name="jhi_when" type="date"/>
+            <column name="when_date_time" type="date"/>
             <column name="destination_type" type="string"/>
             <column name="available_seats" type="numeric"/>
             <column name="price" type="numeric"/>

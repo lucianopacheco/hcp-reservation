@@ -27,8 +27,8 @@ public class Trip implements Serializable {
     private String driverLogin;
 
     @NotNull
-    @Column(name = "jhi_when", nullable = false)
-    private Instant when;
+    @Column(name = "when_date_time", nullable = false)
+    private Instant whenDateTime;
 
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -89,17 +89,17 @@ public class Trip implements Serializable {
         this.driverLogin = driverLogin;
     }
 
-    public Instant getWhen() {
-        return this.when;
+    public Instant getWhenDateTime() {
+        return this.whenDateTime;
     }
 
-    public Trip when(Instant when) {
-        this.setWhen(when);
+    public Trip whenDateTime(Instant whenDateTime) {
+        this.setWhenDateTime(whenDateTime);
         return this;
     }
 
-    public void setWhen(Instant when) {
-        this.when = when;
+    public void setWhenDateTime(Instant whenDateTime) {
+        this.whenDateTime = whenDateTime;
     }
 
     public LocationType getDestinationType() {
@@ -231,7 +231,7 @@ public class Trip implements Serializable {
         return "Trip{" +
             "id=" + getId() +
             ", driverLogin='" + getDriverLogin() + "'" +
-            ", when='" + getWhen() + "'" +
+            ", whenDateTime='" + getWhenDateTime() + "'" +
             ", destinationType='" + getDestinationType() + "'" +
             ", availableSeats=" + getAvailableSeats() +
             ", price=" + getPrice() +

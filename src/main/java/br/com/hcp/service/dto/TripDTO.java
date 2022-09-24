@@ -18,7 +18,7 @@ public class TripDTO implements Serializable {
     private String driverLogin;
 
     @NotNull
-    private Instant when;
+    private Instant whenDateTime;
 
     @NotNull
     private LocationType destinationType;
@@ -55,12 +55,12 @@ public class TripDTO implements Serializable {
         this.driverLogin = driverLogin;
     }
 
-    public Instant getWhen() {
-        return when;
+    public Instant getWhenDateTime() {
+        return whenDateTime;
     }
 
-    public void setWhen(Instant when) {
-        this.when = when;
+    public void setWhenDateTime(Instant whenDateTime) {
+        this.whenDateTime = whenDateTime;
     }
 
     public LocationType getDestinationType() {
@@ -154,7 +154,7 @@ public class TripDTO implements Serializable {
         return "TripDTO{" +
             "id=" + getId() +
             ", driverLogin='" + getDriverLogin() + "'" +
-            ", when='" + getWhen() + "'" +
+            ", whenDateTime='" + getWhenDateTime() + "'" +
             ", destinationType='" + getDestinationType() + "'" +
             ", availableSeats=" + getAvailableSeats() +
             ", price=" + getPrice() +

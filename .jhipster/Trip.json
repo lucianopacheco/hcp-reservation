@@ -10,7 +10,7 @@
       "fieldValidateRules": ["required"]
     },
     {
-      "fieldName": "when",
+      "fieldName": "whenDateTime",
       "fieldType": "Instant",
       "fieldValidateRules": ["required"]
     },
