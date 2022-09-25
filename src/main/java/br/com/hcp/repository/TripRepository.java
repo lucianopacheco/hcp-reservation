@@ -22,15 +22,15 @@ public interface TripRepository extends JpaRepository<Trip, Long> {
         return this.findAllWithToOneRelationships();
     }
 
-    default Page<Trip> findAllWithEagerRelationships(Pageable pageable) {
-        return this.findAllWithToOneRelationships(pageable);
+    default Page<Trip> findAllWithEagerRelationships(Pageable pageable, String login) {
+        return this.findAllWithToOneRelationships(pageable, login);
     }
 
     @Query(
-        value = "select distinct trip from Trip trip left join fetch trip.vehicle left join fetch trip.from left join fetch trip.to",
+        value = "select distinct trip from Trip trip left join fetch trip.vehicle left join fetch trip.from left join fetch trip.to where trip.driverLogin = :login",
         countQuery = "select count(distinct trip) from Trip trip"
     )
-    Page<Trip> findAllWithToOneRelationships(Pageable pageable);
+    Page<Trip> findAllWithToOneRelationships(Pageable pageable, @Param("login") String login);
 
     @Query("select distinct trip from Trip trip left join fetch trip.vehicle left join fetch trip.from left join fetch trip.to")
     List<Trip> findAllWithToOneRelationships();
