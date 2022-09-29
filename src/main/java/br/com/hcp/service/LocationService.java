@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -50,10 +49,17 @@ public class LocationService {
      */
     public LocationDTO save(LocationDTO locationDTO) {
         log.debug("Request to save Location : {}", locationDTO);
-        Location location = locationMapper.toEntity(locationDTO);
-        location = locationRepository.save(location);
         
+        //Location existedLocation = locationRepository.findByZipcodeAndNumber(locationDTO.getZipcode(), locationDTO.getNumber());
+        Location location = locationMapper.toEntity(locationDTO);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        
+        if (location.getId() != null) {
+        	locationUserRepository.save(new LocationUser(auth.getName(), location));
+        	return locationMapper.toDto(location);
+        }
+        
+        location = locationRepository.save(location);
         locationUserRepository.save(new LocationUser(auth.getName(), location));
         
         return locationMapper.toDto(location);
@@ -116,6 +122,19 @@ public class LocationService {
     public Optional<LocationDTO> findOne(Long id) {
         log.debug("Request to get Location : {}", id);
         return locationRepository.findById(id).map(locationMapper::toDto);
+    }
+    
+    @Transactional(readOnly = true)
+    public Optional<LocationDTO> findByZipcodeAndNumber(String zipcode, String number) {
+        log.debug("Request to get Location : zipcode {}, number {}", zipcode, number);
+        
+        Optional<Location> location = locationRepository.findByZipcodeAndNumber(zipcode, number);
+        
+        if (location.isEmpty()) {
+        	Optional.empty();
+        }
+        
+        return location.map(locationMapper::toDto);
     }
 
     /**

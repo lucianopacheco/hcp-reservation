@@ -19,4 +19,7 @@ public interface LocationRepository extends JpaRepository<Location, Long> {
 	@Query("SELECT l FROM Location l JOIN LocationUser lu ON lu.location.id = l.id WHERE lu.login = :login")
 	List<Location> findLocationsByLogin(@Param("login") String login);
 	
+	@Query
+	Optional<Location> findByZipcodeAndNumber(String zipcode, String number);
+	
 }
