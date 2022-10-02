@@ -1,5 +1,6 @@
 package br.com.hcp.service.dto;
 
+import br.com.hcp.domain.enumeration.LocationType;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -11,6 +12,8 @@ public class LocationUserDTO implements Serializable {
     private Long id;
 
     private String login;
+
+    private LocationType locationType;
 
     private LocationDTO location;
 
@@ -28,6 +31,14 @@ public class LocationUserDTO implements Serializable {
 
     public void setLogin(String login) {
         this.login = login;
+    }
+
+    public LocationType getLocationType() {
+        return locationType;
+    }
+
+    public void setLocationType(LocationType locationType) {
+        this.locationType = locationType;
     }
 
     public LocationDTO getLocation() {
@@ -65,6 +76,7 @@ public class LocationUserDTO implements Serializable {
         return "LocationUserDTO{" +
             "id=" + getId() +
             ", login='" + getLogin() + "'" +
+            ", locationType='" + getLocationType() + "'" +
             ", location=" + getLocation() +
             "}";
     }

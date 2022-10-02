@@ -7,6 +7,12 @@
     {
       "fieldName": "login",
       "fieldType": "String"
+    },
+    {
+      "fieldName": "locationType",
+      "fieldType": "LocationType",
+      "fieldValidateRules": [],
+      "fieldValues": "HOME,LOCATION"
     }
   ],
   "jpaMetamodelFiltering": false,

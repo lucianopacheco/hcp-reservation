@@ -1,5 +1,6 @@
 package br.com.hcp.domain;
 
+import br.com.hcp.domain.enumeration.LocationType;
 import java.io.Serializable;
 import javax.persistence.*;
 
@@ -21,16 +22,17 @@ public class LocationUser implements Serializable {
     @Column(name = "login")
     private String login;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "location_type")
+    private LocationType locationType;
+
     @ManyToOne
     private Location location;
     
-    public LocationUser() {
-		super();
-	}
-
-	public LocationUser(String login, Location location) {
+    public LocationUser(String login, LocationType locationType, Location location) {
 		super();
 		this.login = login;
+		this.locationType = locationType;
 		this.location = location;
 	}
 
@@ -60,6 +62,19 @@ public class LocationUser implements Serializable {
 
     public void setLogin(String login) {
         this.login = login;
+    }
+
+    public LocationType getLocationType() {
+        return this.locationType;
+    }
+
+    public LocationUser locationType(LocationType locationType) {
+        this.setLocationType(locationType);
+        return this;
+    }
+
+    public void setLocationType(LocationType locationType) {
+        this.locationType = locationType;
     }
 
     public Location getLocation() {
@@ -100,6 +115,7 @@ public class LocationUser implements Serializable {
         return "LocationUser{" +
             "id=" + getId() +
             ", login='" + getLogin() + "'" +
+            ", locationType='" + getLocationType() + "'" +
             "}";
     }
 }

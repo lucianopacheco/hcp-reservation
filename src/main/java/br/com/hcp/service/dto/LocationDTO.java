@@ -34,8 +34,25 @@ public class LocationDTO implements Serializable {
     private String state;
 
     private LocationType type;
+    
+    public LocationDTO() {
+		super();
+	}
 
-    public Long getId() {
+	public LocationDTO(Long id, @NotNull String name, @NotNull String zipcode, String address,
+			@NotNull String number, @NotNull String city, @NotNull String state, LocationType type) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.zipcode = zipcode;
+		this.address = address;
+		this.number = number;
+		this.city = city;
+		this.state = state;
+		this.type = type;
+	}
+    
+	public Long getId() {
         return id;
     }
 

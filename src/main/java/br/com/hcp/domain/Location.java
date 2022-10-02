@@ -43,9 +43,9 @@ public class Location implements Serializable {
     @Column(name = "state", nullable = false)
     private String state;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "type")
-    private LocationType type;
+//    @Enumerated(EnumType.STRING)
+//    @Column(name = "type")
+//    private LocationType type;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -140,19 +140,6 @@ public class Location implements Serializable {
         this.state = state;
     }
 
-    public LocationType getType() {
-        return this.type;
-    }
-
-    public Location type(LocationType type) {
-        this.setType(type);
-        return this;
-    }
-
-    public void setType(LocationType type) {
-        this.type = type;
-    }
-
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -183,7 +170,6 @@ public class Location implements Serializable {
             ", number='" + getNumber() + "'" +
             ", city='" + getCity() + "'" +
             ", state='" + getState() + "'" +
-            ", type='" + getType() + "'" +
             "}";
     }
 }

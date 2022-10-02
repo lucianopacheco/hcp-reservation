@@ -2,7 +2,6 @@ package br.com.hcp.service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,12 +54,12 @@ public class LocationService {
         
         if (locationDTO.getExistedId() != null) {
         	location.setId(locationDTO.getExistedId());
-        	locationUserRepository.save(new LocationUser(auth.getName(), location));
+        	locationUserRepository.save(new LocationUser(auth.getName(), locationDTO.getType(), location));
         	return locationMapper.toDto(location);
         }
         
         location = locationRepository.save(location);
-        locationUserRepository.save(new LocationUser(auth.getName(), location));
+        locationUserRepository.save(new LocationUser(auth.getName(), locationDTO.getType(), location));
         
         return locationMapper.toDto(location);
     }
@@ -109,7 +108,7 @@ public class LocationService {
         log.debug("Request to get all Locations");
         
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return locationRepository.findLocationsByLogin(auth.getName()).stream().map(locationMapper::toDto).collect(Collectors.toList());
+        return locationRepository.findLocationsByLogin(auth.getName());
     }
 
     /**

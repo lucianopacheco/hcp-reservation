@@ -17,6 +17,9 @@
             <column name="login" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
+            <column name="location_type" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
             <column name="location_id" type="bigint">
                 <constraints nullable="true" />
             </column>
@@ -42,6 +45,7 @@
                   usePreparedStatements="true">
             <column name="id" type="numeric"/>
             <column name="login" type="string"/>
+            <column name="location_type" type="string"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>
