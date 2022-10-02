@@ -35,12 +35,14 @@ public class LocationDTO implements Serializable {
 
     private LocationType type;
     
+    private Long locationUserId;
+    
     public LocationDTO() {
 		super();
 	}
 
 	public LocationDTO(Long id, @NotNull String name, @NotNull String zipcode, String address,
-			@NotNull String number, @NotNull String city, @NotNull String state, LocationType type) {
+			@NotNull String number, @NotNull String city, @NotNull String state, LocationType type, Long locationUserId) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -50,6 +52,7 @@ public class LocationDTO implements Serializable {
 		this.city = city;
 		this.state = state;
 		this.type = type;
+		this.locationUserId = locationUserId;
 	}
     
 	public Long getId() {
@@ -123,8 +126,16 @@ public class LocationDTO implements Serializable {
     public void setType(LocationType type) {
         this.type = type;
     }
+    
+    public Long getLocationUserId() {
+		return locationUserId;
+	}
 
-    @Override
+	public void setLocationUserId(Long locationUserId) {
+		this.locationUserId = locationUserId;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;

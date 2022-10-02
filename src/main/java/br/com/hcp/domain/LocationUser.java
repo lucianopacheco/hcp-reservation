@@ -29,7 +29,11 @@ public class LocationUser implements Serializable {
     @ManyToOne
     private Location location;
     
-    public LocationUser(String login, LocationType locationType, Location location) {
+    public LocationUser() {
+		super();
+	}
+
+	public LocationUser(String login, LocationType locationType, Location location) {
 		super();
 		this.login = login;
 		this.locationType = locationType;

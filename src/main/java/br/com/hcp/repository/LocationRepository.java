@@ -17,7 +17,7 @@ import br.com.hcp.service.dto.LocationDTO;
 @Repository
 public interface LocationRepository extends JpaRepository<Location, Long> {
 	
-	@Query("SELECT new br.com.hcp.service.dto.LocationDTO(l.id, l.name, l.zipcode, l.address, l.number, l.city, l.state, lu.locationType) "
+	@Query("SELECT new br.com.hcp.service.dto.LocationDTO(l.id, l.name, l.zipcode, l.address, l.number, l.city, l.state, lu.locationType, lu.id) "
 			+ "FROM Location l JOIN LocationUser lu ON lu.location.id = l.id "
 			+ "WHERE lu.login = :login")
 	List<LocationDTO> findLocationsByLogin(@Param("login") String login);
