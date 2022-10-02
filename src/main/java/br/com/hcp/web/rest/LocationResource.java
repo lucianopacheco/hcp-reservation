@@ -173,6 +173,10 @@ public class LocationResource {
     public ResponseEntity<LocationDTO> getLocation(@PathVariable String zipcode, @PathVariable String number) {
         log.debug("REST request to get Location : {} {}", zipcode, number);
         Optional<LocationDTO> locationDTO = locationService.findByZipcodeAndNumber(zipcode, number);
+        
+        if (locationDTO.isEmpty()) {
+        	return ResponseEntity.badRequest().body(null);
+        }
         return ResponseUtil.wrapOrNotFound(locationDTO);
     }
 
