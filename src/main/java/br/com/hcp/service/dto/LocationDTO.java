@@ -10,7 +10,11 @@ import javax.validation.constraints.*;
  */
 public class LocationDTO implements Serializable {
 
-    private Long id;
+	private static final long serialVersionUID = -595276024137588101L;
+
+	private Long id;
+    
+    private Long existedId;
 
     @NotNull
     private String name;
@@ -39,7 +43,15 @@ public class LocationDTO implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
+    public Long getExistedId() {
+		return existedId;
+	}
+
+	public void setExistedId(Long existedId) {
+		this.existedId = existedId;
+	}
+
+	public String getName() {
         return name;
     }
 

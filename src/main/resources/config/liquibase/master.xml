@@ -18,15 +18,11 @@
     <include file="config/liquibase/changelog/20220831034126_added_entity_Condominium.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20220919231605_added_entity_Location.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20220921010054_added_entity_LocationUser.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20220921010602_added_entity_Driver.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20220921010726_added_entity_Passanger.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20220924163851_added_entity_Vehicle.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20220924172206_added_entity_Trip.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20220925032311_added_entity_Reservation.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20220921010054_added_entity_constraints_LocationUser.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20220921010602_added_entity_constraints_Driver.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20220921010726_added_entity_constraints_Passanger.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20220924172206_added_entity_constraints_Trip.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20220925032311_added_entity_constraints_Reservation.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->

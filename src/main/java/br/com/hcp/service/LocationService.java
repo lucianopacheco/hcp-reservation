@@ -50,11 +50,11 @@ public class LocationService {
     public LocationDTO save(LocationDTO locationDTO) {
         log.debug("Request to save Location : {}", locationDTO);
         
-        //Location existedLocation = locationRepository.findByZipcodeAndNumber(locationDTO.getZipcode(), locationDTO.getNumber());
         Location location = locationMapper.toEntity(locationDTO);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         
-        if (location.getId() != null) {
+        if (locationDTO.getExistedId() != null) {
+        	location.setId(locationDTO.getExistedId());
         	locationUserRepository.save(new LocationUser(auth.getName(), location));
         	return locationMapper.toDto(location);
         }
