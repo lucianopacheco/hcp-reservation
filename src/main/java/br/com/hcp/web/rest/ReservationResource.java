@@ -124,8 +124,7 @@ public class ReservationResource {
     @PatchMapping(value = "/reservations/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<ReservationDTO> partialUpdateReservation(
         @PathVariable(value = "id", required = false) final Long id,
-        @NotNull @RequestBody ReservationDTO reservationDTO
-    ) throws URISyntaxException {
+        @NotNull @RequestBody ReservationDTO reservationDTO) throws URISyntaxException {
         log.debug("REST request to partial update Reservation partially : {}, {}", id, reservationDTO);
         if (reservationDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
@@ -158,6 +157,15 @@ public class ReservationResource {
         ReservationCriteria criteria,
         @org.springdoc.api.annotations.ParameterObject Pageable pageable) {
         log.debug("REST request to get Reservations by criteria: {}", criteria);
+        Page<ReservationDTO> page = reservationService.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+    
+    @GetMapping("/reservations/trips/homeLocations/{homeLocationId}/workLoation/{workLocationId}")
+    public ResponseEntity<List<ReservationDTO>> getAllReservationsByLocation(@PathVariable Long homeLocationId, @PathVariable Long workLocationId,
+        @org.springdoc.api.annotations.ParameterObject Pageable pageable) {
+        log.debug("REST request to get Reservations by homeLocationId: {} / workLocationId: {}", homeLocationId, workLocationId);
         Page<ReservationDTO> page = reservationService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());

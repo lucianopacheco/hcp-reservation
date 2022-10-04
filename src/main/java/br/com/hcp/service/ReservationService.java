@@ -1,10 +1,7 @@
 package br.com.hcp.service;
 
-import br.com.hcp.domain.Reservation;
-import br.com.hcp.repository.ReservationRepository;
-import br.com.hcp.service.dto.ReservationDTO;
-import br.com.hcp.service.mapper.ReservationMapper;
 import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -13,6 +10,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import br.com.hcp.domain.Reservation;
+import br.com.hcp.repository.ReservationRepository;
+import br.com.hcp.service.dto.ReservationDTO;
+import br.com.hcp.service.mapper.ReservationMapper;
 
 /**
  * Service Implementation for managing {@link Reservation}.
@@ -90,6 +92,14 @@ public class ReservationService {
      */
     @Transactional(readOnly = true)
     public Page<ReservationDTO> findAll(Pageable pageable) {
+        log.debug("Request to get all Reservations");
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        
+        return reservationRepository.findByLogin(pageable, auth.getName()).map(reservationMapper::toDto);
+    }
+    
+    @Transactional(readOnly = true)
+    public Page<ReservationDTO> findAllByLocation(Pageable pageable, Long homeLocationId, Long workLocationId) {
         log.debug("Request to get all Reservations");
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         

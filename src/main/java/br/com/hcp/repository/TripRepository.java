@@ -1,13 +1,16 @@
 package br.com.hcp.repository;
 
-import br.com.hcp.domain.Trip;
 import java.util.List;
 import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.*;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import br.com.hcp.domain.Trip;
 
 /**
  * Spring Data SQL repository for the Trip entity.
@@ -31,6 +34,12 @@ public interface TripRepository extends JpaRepository<Trip, Long> {
         countQuery = "select count(distinct trip) from Trip trip"
     )
     Page<Trip> findAllWithToOneRelationships(Pageable pageable, @Param("login") String login);
+    
+    @Query(
+            value = "select distinct trip from Trip trip left join fetch trip.vehicle left join fetch trip.from left join fetch trip.to where (trip.from.id = :homeLocationId or trip.to.id = :workLocationId)",
+            countQuery = "select count(distinct trip) from Trip trip"
+    )
+    Page<Trip> findAllByLocation(Pageable pageable, @Param("homeLocationId") Long homeLocationId, @Param("workLocationId") Long workLocationId);
 
     @Query("select distinct trip from Trip trip left join fetch trip.vehicle left join fetch trip.from left join fetch trip.to")
     List<Trip> findAllWithToOneRelationships();

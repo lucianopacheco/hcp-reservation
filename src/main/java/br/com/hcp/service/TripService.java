@@ -1,10 +1,7 @@
 package br.com.hcp.service;
 
-import br.com.hcp.domain.Trip;
-import br.com.hcp.repository.TripRepository;
-import br.com.hcp.service.dto.TripDTO;
-import br.com.hcp.service.mapper.TripMapper;
 import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -13,6 +10,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import br.com.hcp.domain.Trip;
+import br.com.hcp.repository.TripRepository;
+import br.com.hcp.service.dto.TripDTO;
+import br.com.hcp.service.mapper.TripMapper;
 
 /**
  * Service Implementation for managing {@link Trip}.
@@ -89,7 +91,7 @@ public class TripService {
         log.debug("Request to get all Trips");
         return tripRepository.findAll(pageable).map(tripMapper::toDto);
     }
-
+    
     /**
      * Get all the trips with eager load of many-to-many relationships.
      *
@@ -98,6 +100,15 @@ public class TripService {
     public Page<TripDTO> findAllWithEagerRelationships(Pageable pageable) {
     	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return tripRepository.findAllWithEagerRelationships(pageable, auth.getName()).map(tripMapper::toDto);
+    }
+
+    /**
+     * Get all the trips by home location and work location
+     *
+     * @return the list of entities.
+     */
+    public Page<TripDTO> findAllByLocation(Long homeLocationId, Long workLocationId, Pageable pageable) {
+        return tripRepository.findAllByLocation(pageable, homeLocationId, workLocationId).map(tripMapper::toDto);
     }
 
     /**
