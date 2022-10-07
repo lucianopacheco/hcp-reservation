@@ -2,6 +2,8 @@ package br.com.hcp.service;
 
 import java.util.Optional;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -12,9 +14,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.hcp.domain.Reservation;
+import br.com.hcp.domain.Trip;
 import br.com.hcp.repository.ReservationRepository;
+import br.com.hcp.repository.TripRepository;
 import br.com.hcp.service.dto.ReservationDTO;
 import br.com.hcp.service.mapper.ReservationMapper;
+import br.com.hcp.web.rest.errors.BadRequestAlertException;
 
 /**
  * Service Implementation for managing {@link Reservation}.
@@ -27,14 +32,18 @@ public class ReservationService {
 
     private final ReservationRepository reservationRepository;
 
+    private final TripRepository tripRepository;
+    
     private final ReservationMapper reservationMapper;
+    
+    public ReservationService(ReservationRepository reservationRepository, TripRepository tripRepository,
+			ReservationMapper reservationMapper) {
+		this.reservationRepository = reservationRepository;
+		this.tripRepository = tripRepository;
+		this.reservationMapper = reservationMapper;
+	}
 
-    public ReservationService(ReservationRepository reservationRepository, ReservationMapper reservationMapper) {
-        this.reservationRepository = reservationRepository;
-        this.reservationMapper = reservationMapper;
-    }
-
-    /**
+	/**
      * Save a reservation.
      *
      * @param reservationDTO the entity to save.
@@ -44,8 +53,19 @@ public class ReservationService {
         log.debug("Request to save Reservation : {}", reservationDTO);
         Reservation reservation = reservationMapper.toEntity(reservationDTO);
         
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        reservation.setPassengerLogin(auth.getName());
+        //Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        //reservation.setPassengerLogin(auth.getName());
+        
+        Trip trip = tripRepository.findById(reservation.getTrip().getId())
+        		.orElseThrow(EntityNotFoundException::new);
+        
+        if (trip.getAvailableSeats() == 0) {
+        	throw new BadRequestAlertException("Assento não disponível para esta viagem.", "Reservation", "availableSeats");
+        }
+        
+        trip.setAvailableSeats(trip.getAvailableSeats() - 1);
+        
+        reservation.setTrip(trip);
         
         reservation = reservationRepository.save(reservation);
         return reservationMapper.toDto(reservation);

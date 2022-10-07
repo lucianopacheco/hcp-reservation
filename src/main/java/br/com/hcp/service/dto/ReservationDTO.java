@@ -11,7 +11,9 @@ import javax.validation.constraints.*;
  */
 public class ReservationDTO implements Serializable {
 
-    private Long id;
+	private static final long serialVersionUID = 1941675249242154798L;
+
+	private Long id;
 
     @NotNull
     private String passengerLogin;

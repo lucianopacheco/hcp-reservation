@@ -38,7 +38,7 @@ public class Reservation implements Serializable {
     @Column(name = "updated_at")
     private Instant updatedAt;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
     @NotNull
     @JsonIgnoreProperties(value = { "vehicle", "from", "to" }, allowSetters = true)
     private Trip trip;
