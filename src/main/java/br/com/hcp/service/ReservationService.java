@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.hcp.domain.Reservation;
 import br.com.hcp.domain.Trip;
+import br.com.hcp.domain.enumeration.ReservationStatus;
 import br.com.hcp.repository.ReservationRepository;
 import br.com.hcp.repository.TripRepository;
 import br.com.hcp.service.dto.ReservationDTO;
@@ -144,7 +145,11 @@ public class ReservationService {
      * @param id the id of the entity.
      */
     public void delete(Long id) {
-        log.debug("Request to delete Reservation : {}", id);
-        reservationRepository.deleteById(id);
+        log.debug("Request to cancel Reservation : {}", id);
+        
+        Reservation reservation = reservationRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        reservation.setStatus(ReservationStatus.CANCELED);
+        reservation.getTrip().setAvailableSeats(reservation.getTrip().getAvailableSeats() + 1);
+        reservationRepository.save(reservation);
     }
 }
