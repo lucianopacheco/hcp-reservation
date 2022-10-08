@@ -1,5 +1,6 @@
 package br.com.hcp.service;
 
+import java.time.Instant;
 import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
@@ -150,6 +151,7 @@ public class ReservationService {
         Reservation reservation = reservationRepository.findById(id).orElseThrow(EntityNotFoundException::new);
         reservation.setStatus(ReservationStatus.CANCELED);
         reservation.getTrip().setAvailableSeats(reservation.getTrip().getAvailableSeats() + 1);
+        reservation.setUpdatedAt(Instant.now());
         reservationRepository.save(reservation);
     }
 }
