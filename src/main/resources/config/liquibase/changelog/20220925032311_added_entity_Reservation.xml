@@ -34,6 +34,16 @@
         <dropDefaultValue tableName="reservation" columnName="created_at" columnDataType="${datetimeType}"/>
         <dropDefaultValue tableName="reservation" columnName="updated_at" columnDataType="${datetimeType}"/>
     </changeSet>
+    
+    <changeSet author="lucianopacheco" id="20221009221200-1">  
+		<addAutoIncrement 
+			columnDataType="bigint"
+			columnName="id" 
+			incrementBy="1"  
+			schemaName="public" 
+			startWith="100"  
+			tableName="reservation"/>  
+	</changeSet>
 
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
 
