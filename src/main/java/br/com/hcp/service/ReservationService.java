@@ -19,6 +19,8 @@ import br.com.hcp.domain.Trip;
 import br.com.hcp.domain.enumeration.ReservationStatus;
 import br.com.hcp.repository.ReservationRepository;
 import br.com.hcp.repository.TripRepository;
+import br.com.hcp.security.AuthoritiesConstants;
+import br.com.hcp.security.SecurityUtils;
 import br.com.hcp.service.dto.ReservationDTO;
 import br.com.hcp.service.mapper.ReservationMapper;
 import br.com.hcp.web.rest.errors.BadRequestAlertException;
@@ -117,7 +119,15 @@ public class ReservationService {
         log.debug("Request to get all Reservations");
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         
-        return reservationRepository.findByLogin(pageable, auth.getName()).map(reservationMapper::toDto);
+        if (SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.PASSENGER)) {
+        	return reservationRepository.findByLoginToUserPassenger(pageable, auth.getName()).map(reservationMapper::toDto);
+        }
+        
+        if (SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.DRIVER)) {
+        	return reservationRepository.findByLoginToUserDriver(pageable, auth.getName()).map(reservationMapper::toDto);
+        }
+
+        return Page.empty();
     }
     
     @Transactional(readOnly = true)
@@ -125,7 +135,7 @@ public class ReservationService {
         log.debug("Request to get all Reservations");
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         
-        return reservationRepository.findByLogin(pageable, auth.getName()).map(reservationMapper::toDto);
+        return reservationRepository.findByLoginToUserPassenger(pageable, auth.getName()).map(reservationMapper::toDto);
     }
 
     /**

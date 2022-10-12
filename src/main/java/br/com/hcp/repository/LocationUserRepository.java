@@ -37,4 +37,6 @@ public interface LocationUserRepository extends JpaRepository<LocationUser, Long
 
     @Query("select locationUser from LocationUser locationUser left join fetch locationUser.location where locationUser.id =:id")
     Optional<LocationUser> findOneWithToOneRelationships(@Param("id") Long id);
+    
+    Optional<LocationUser> findByLocationIdAndLogin(Long locationId, String login);
 }

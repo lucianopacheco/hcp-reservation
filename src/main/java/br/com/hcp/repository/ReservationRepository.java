@@ -17,6 +17,9 @@ import br.com.hcp.domain.Reservation;
 public interface ReservationRepository extends JpaRepository<Reservation, Long>, JpaSpecificationExecutor<Reservation> {
 	
 	@Query("select r from Reservation r where r.passengerLogin = :login")
-	public Page<Reservation> findByLogin(Pageable pageable, @Param("login") String login);
+	public Page<Reservation> findByLoginToUserPassenger(Pageable pageable, @Param("login") String login);
+	
+	@Query("select r from Reservation r where r.trip.driverLogin = :login")
+	public Page<Reservation> findByLoginToUserDriver(Pageable pageable, @Param("login") String login);
 	
 }
