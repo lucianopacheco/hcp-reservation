@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import br.com.hcp.domain.Location;
+import br.com.hcp.domain.enumeration.LocationType;
 import br.com.hcp.service.dto.LocationDTO;
 
 /**
@@ -21,6 +22,12 @@ public interface LocationRepository extends JpaRepository<Location, Long> {
 			+ "FROM Location l JOIN LocationUser lu ON lu.location.id = l.id "
 			+ "WHERE lu.login = :login")
 	List<LocationDTO> findLocationsByLogin(@Param("login") String login);
+	
+	@Query("SELECT new br.com.hcp.service.dto.LocationDTO(l.id, l.name, l.zipcode, l.address, l.number, l.city, l.state, lu.locationType, lu.id) "
+			+ "FROM Location l JOIN LocationUser lu ON lu.location.id = l.id "
+			+ "WHERE lu.login = :login "
+			+ "AND lu.locationType = :locationType")
+	List<LocationDTO> findByLoginAndLocationType(@Param("login") String login, @Param("locationType") LocationType locationType);
 	
 	@Query
 	Optional<Location> findByZipcodeAndNumber(String zipcode, String number);
