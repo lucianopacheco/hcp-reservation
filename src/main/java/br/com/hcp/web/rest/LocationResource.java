@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.hcp.domain.enumeration.LocationType;
 import br.com.hcp.repository.LocationRepository;
 import br.com.hcp.service.LocationService;
 import br.com.hcp.service.dto.LocationDTO;
@@ -167,6 +168,12 @@ public class LocationResource {
         log.debug("REST request to get Location : {}", id);
         Optional<LocationDTO> locationDTO = locationService.findOne(id);
         return ResponseUtil.wrapOrNotFound(locationDTO);
+    }
+    
+    @GetMapping("/locations/login/{login}/locationType/{locationType}")
+    public ResponseEntity<LocationDTO> getLocation(@PathVariable String login, @PathVariable LocationType locationType) {
+        log.debug("REST request to get login {}, locationType {}", login, locationType);
+        return ResponseEntity.ok(locationService.findByLoginAndLocationType(login, locationType));
     }
     
     @GetMapping("/locations/zipcode/{zipcode}/number/{number}")

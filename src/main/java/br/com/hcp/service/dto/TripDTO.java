@@ -12,15 +12,15 @@ import javax.validation.constraints.*;
  */
 public class TripDTO implements Serializable {
 
-    private Long id;
+	private static final long serialVersionUID = 9086863735871820236L;
 
-    @NotNull
+	private Long id;
+
     private String driverLogin;
 
     @NotNull
     private Instant whenDateTime;
 
-    @NotNull
     private LocationType destinationType;
 
     @NotNull

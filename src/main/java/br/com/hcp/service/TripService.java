@@ -1,5 +1,6 @@
 package br.com.hcp.service;
 
+import java.time.Instant;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -11,7 +12,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.hcp.domain.LocationUser;
 import br.com.hcp.domain.Trip;
+import br.com.hcp.repository.LocationUserRepository;
 import br.com.hcp.repository.TripRepository;
 import br.com.hcp.service.dto.TripDTO;
 import br.com.hcp.service.mapper.TripMapper;
@@ -28,13 +31,18 @@ public class TripService {
     private final TripRepository tripRepository;
 
     private final TripMapper tripMapper;
+    
+    private final LocationUserRepository locationUserRepository;
 
-    public TripService(TripRepository tripRepository, TripMapper tripMapper) {
-        this.tripRepository = tripRepository;
-        this.tripMapper = tripMapper;
-    }
+    public TripService(TripRepository tripRepository, TripMapper tripMapper,
+			LocationUserRepository locationUserRepository) {
+		super();
+		this.tripRepository = tripRepository;
+		this.tripMapper = tripMapper;
+		this.locationUserRepository = locationUserRepository;
+	}
 
-    /**
+	/**
      * Save a trip.
      *
      * @param tripDTO the entity to save.
@@ -43,6 +51,17 @@ public class TripService {
     public TripDTO save(TripDTO tripDTO) {
         log.debug("Request to save Trip : {}", tripDTO);
         Trip trip = tripMapper.toEntity(tripDTO);
+        trip.setCreatedAt(Instant.now());
+        
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        trip.setDriverLogin(auth.getName());
+        
+        Optional<LocationUser> locationTo = locationUserRepository.findByLocationIdAndLogin(trip.getTo().getId(), auth.getName());
+        
+        if (locationTo.isPresent()) {
+        	trip.setDestinationType(locationTo.get().getLocationType());
+        }
+        
         trip = tripRepository.save(trip);
         return tripMapper.toDto(trip);
     }

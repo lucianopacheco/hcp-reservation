@@ -29,7 +29,6 @@ public class Trip implements Serializable {
     @Column(name = "when_date_time", nullable = false)
     private Instant whenDateTime;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "destination_type", nullable = false)
     private LocationType destinationType;

@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.hcp.domain.Location;
 import br.com.hcp.domain.LocationUser;
+import br.com.hcp.domain.enumeration.LocationType;
 import br.com.hcp.repository.LocationRepository;
 import br.com.hcp.repository.LocationUserRepository;
 import br.com.hcp.service.dto.LocationDTO;
@@ -121,6 +122,18 @@ public class LocationService {
     public Optional<LocationDTO> findOne(Long id) {
         log.debug("Request to get Location : {}", id);
         return locationRepository.findById(id).map(locationMapper::toDto);
+    }
+    
+    @Transactional(readOnly = true)
+    public LocationDTO findByLoginAndLocationType(String login, LocationType locationType) {
+        log.debug("Request to get Location : login {}, locationType {}", login, locationType);
+        List<LocationDTO> result = locationRepository.findByLoginAndLocationType(login, locationType);
+        
+        if (result.isEmpty()) {
+        	return null;
+        }
+        
+        return result.get(0);
     }
     
     @Transactional(readOnly = true)
