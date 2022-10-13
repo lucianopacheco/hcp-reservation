@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.hcp.domain.Location;
 import br.com.hcp.domain.LocationUser;
 import br.com.hcp.domain.enumeration.LocationType;
+import br.com.hcp.feign.CepFeignClient;
+import br.com.hcp.feign.EnderecoDTO;
 import br.com.hcp.repository.LocationRepository;
 import br.com.hcp.repository.LocationUserRepository;
 import br.com.hcp.service.dto.LocationDTO;
@@ -32,13 +35,16 @@ public class LocationService {
     private final LocationUserRepository locationUserRepository;
 
     private final LocationMapper locationMapper;
+    
+    private final CepFeignClient cepFeignClient;
 
-    public LocationService(LocationRepository locationRepository, LocationUserRepository locationUserRepository,
-			LocationMapper locationMapper) {
+	public LocationService(LocationRepository locationRepository, LocationUserRepository locationUserRepository,
+			LocationMapper locationMapper, CepFeignClient cepFeignClient) {
 		super();
 		this.locationRepository = locationRepository;
 		this.locationUserRepository = locationUserRepository;
 		this.locationMapper = locationMapper;
+		this.cepFeignClient = cepFeignClient;
 	}
 
 	/**
@@ -142,11 +148,24 @@ public class LocationService {
         
         Optional<Location> location = locationRepository.findByZipcodeAndNumber(zipcode, number);
         
-        if (location.isEmpty()) {
-        	Optional.empty();
+        if (location.isPresent()) {
+        	return location.map(locationMapper::toDto);
         }
         
-        return location.map(locationMapper::toDto);
+        try {
+        	EnderecoDTO enderecoDto = cepFeignClient.getCep(zipcode);
+        	LocationDTO locationDTO = new LocationDTO();
+        	locationDTO.setAddress(enderecoDto.getLogradouro());
+        	locationDTO.setCity(enderecoDto.getCidade());
+        	locationDTO.setZipcode(enderecoDto.getCep());
+        	locationDTO.setState(enderecoDto.getEstado());
+        	
+        	return Optional.of(locationDTO);
+		} catch (Exception e) {
+			log.error("Não foi possível fazer a busca por CEP na API: {}", e.getMessage(), e);
+		}
+        
+        return Optional.empty();
     }
 
     /**
