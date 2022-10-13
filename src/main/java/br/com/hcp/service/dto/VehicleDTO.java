@@ -9,7 +9,9 @@ import javax.validation.constraints.*;
  */
 public class VehicleDTO implements Serializable {
 
-    private Long id;
+	private static final long serialVersionUID = -6044259873950110759L;
+
+	private Long id;
 
     @NotNull
     private String model;
@@ -20,7 +22,6 @@ public class VehicleDTO implements Serializable {
     @NotNull
     private String plate;
 
-    @NotNull
     private String driverLogin;
 
     public Long getId() {

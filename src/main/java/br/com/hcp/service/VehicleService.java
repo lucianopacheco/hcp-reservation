@@ -10,6 +10,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,6 +42,8 @@ public class VehicleService {
     public VehicleDTO save(VehicleDTO vehicleDTO) {
         log.debug("Request to save Vehicle : {}", vehicleDTO);
         Vehicle vehicle = vehicleMapper.toEntity(vehicleDTO);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        vehicle.setDriverLogin(auth.getName());
         vehicle = vehicleRepository.save(vehicle);
         return vehicleMapper.toDto(vehicle);
     }
@@ -53,6 +57,8 @@ public class VehicleService {
     public VehicleDTO update(VehicleDTO vehicleDTO) {
         log.debug("Request to save Vehicle : {}", vehicleDTO);
         Vehicle vehicle = vehicleMapper.toEntity(vehicleDTO);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        vehicle.setDriverLogin(auth.getName());
         vehicle = vehicleRepository.save(vehicle);
         return vehicleMapper.toDto(vehicle);
     }
@@ -84,8 +90,9 @@ public class VehicleService {
      */
     @Transactional(readOnly = true)
     public List<VehicleDTO> findAll() {
-        log.debug("Request to get all Vehicles");
-        return vehicleRepository.findAll().stream().map(vehicleMapper::toDto).collect(Collectors.toCollection(LinkedList::new));
+        log.debug("Request to get all Vehicles by driver login");
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return vehicleRepository.findByDriverLogin(auth.getName()).stream().map(vehicleMapper::toDto).collect(Collectors.toCollection(LinkedList::new));
     }
 
     /**
