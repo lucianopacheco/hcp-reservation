@@ -1,3 +1,3 @@
 # hcp-reservation
 
-Este microserviço faz parte do projeto de conclusão do curso Arquitetura de Software Distribuído pela PUC Minal Virtual.
+Esta aplicação faz parte do projeto integrado do curso de pós-graduação "Arquitetura de Software Distribuído" pela PUC Minas Virtual.
